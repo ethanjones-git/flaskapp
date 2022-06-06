@@ -57,7 +57,7 @@ def home():
         rmvd_txt = "words"
 
 
-        return render_template('index.html',labels=labels,values =values,rmvd_txt=rmvd_txt)
+        return render_template('index.html')
     else:
         return render_template("index.html", content="Testing")
 
