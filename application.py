@@ -12,11 +12,11 @@ nlp = English()
 nlp = sp.load("en_core_web_md")
 
 '''previous model'''
-lda_mod = LdaModel.load('lda_final.model') #0-people and society, 1-climate change, 2-politics
-loaded_dict = Dictionary.load('mix_P_dic')
+#lda_mod = LdaModel.load('lda_final.model') #0-people and society, 1-climate change, 2-politics
+#loaded_dict = Dictionary.load('mix_P_dic')
 
-with open('mix_P', "rb") as fp:  # Unpickling
-    loaded_crp = pickle.load(fp)
+#with open('mix_P', "rb") as fp:  # Unpickling
+#    loaded_crp = pickle.load(fp)
 
 '''start applicaiton'''
 application = Flask(__name__)
@@ -26,7 +26,8 @@ def home():
     if request.method == "POST":
         text_input = request.form["nm"]
 
-        '''preprocess text'''
+        '''preprocess text
+        
         CUSTOM_FILTERS = [lambda x: x.lower(), strip_tags, strip_punctuation, remove_stopwords, strip_numeric]
         pp_txt = preprocess_string(text_input, CUSTOM_FILTERS)
         npp_txt = list(tokenize(text_input.lower()))
@@ -47,10 +48,14 @@ def home():
         m = lda_mod.get_document_topics(new_text_corpus, 0)
 
         labels = ['Breaking News', 'Climate Change', 'Politics']
-        values =[row[1] for row in m if row[0] <3]
+        values =[row[1] for row in m if row[0] <3]'''
 
         '''removed text'''
-        rmvd_txt =  [txt for txt in npp_txt if txt not in pp_txt]
+        #rmvd_txt =  [txt for txt in npp_txt if txt not in pp_txt]
+        labels = ['Breaking News', 'Climate Change', 'Politics']
+        values = [0.5,0.5,0.5]
+        rmvd_txt = "words"
+
 
         return render_template('index.html',labels=labels,values =values,rmvd_txt=rmvd_txt)
     else:
